@@ -252,14 +252,14 @@ namespace NETF_ScreenCapture
 					break;
 				case WM_GETMINMAXINFO:
 					MINMAXINFO mmi2 = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
-					//if (casetype == 0)
-					//{
-					//	mmi2.ptMinTrackSize.X = 400;
-					//	mmi2.ptMinTrackSize.Y = 270;
+					if (casetype == 0)
+					{
+						mmi2.ptMinTrackSize.X = 400;
+						mmi2.ptMinTrackSize.Y = 270;
 
-					//	mmi2.ptMaxTrackSize.X = 1920;
-					//	mmi2.ptMaxTrackSize.Y = 1920;
-					//}
+						mmi2.ptMaxTrackSize.X = 1920;
+						mmi2.ptMaxTrackSize.Y = 1920;
+					}
 					//else if (casetype == 1 && isResizing) // width moving
 					//{
 					//	mmi2.ptMinTrackSize.X = 400;
@@ -268,14 +268,14 @@ namespace NETF_ScreenCapture
 					//	mmi2.ptMaxTrackSize.X = 1920;
 					//	mmi2.ptMaxTrackSize.Y = height;
 					//}
-					//else if(casetype == 2 && isResizing) // height moving
+					//else if (casetype == 2 && isResizing) // height moving
 					//{
 					//	mmi2.ptMinTrackSize.X = width;
 					//	mmi2.ptMinTrackSize.Y = 270;
 
 					//	mmi2.ptMaxTrackSize.X = width;
 					//	mmi2.ptMaxTrackSize.Y = 1920;
-					//}
+					//	//}
 					Marshal.StructureToPtr(mmi2, m.LParam, true);
 					break;
 			}
@@ -334,12 +334,10 @@ namespace NETF_ScreenCapture
 			else if (e.KeyCode == Keys.LShiftKey)
 			{
 				isShiftPress = true;
-				ReleaseCapture();
-				SendMessage(this.Handle, WM_NCLBUTTONDOWN, (int)HitTestType.HTCAPTION, 0);
+				
 			}
 			else if (e.KeyCode == Keys.Space)
 			{
-				ReleaseCapture();
 				SendMessage(this.Handle, WM_NCLBUTTONDOWN, (int)HitTestType.HTBOTTOMRIGHT, 0);
 			}
 		}
