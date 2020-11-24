@@ -222,7 +222,7 @@ namespace NETF_ScreenCapture
 
 					if (casetype == 0)
 					{
-						if (prevRight != 0 && Math.Abs(prevRight - rc2.Right) > 100)
+						if (prevRight != 0 && Math.Abs(prevRight - rc2.Right) > 100 && bOver == false)
 						{
 							//int d = (rc2.Right - prevRight) / 3;
 							//rc2.Right = (prevRight += d);
@@ -235,31 +235,46 @@ namespace NETF_ScreenCapture
 						{
 							if (cursorRight != int.MinValue)
 							{
-								rc2.Right -= cursorRight;
+								Console.WriteLine($"Size: {rc2.Right} {cursorRight} right! / {Cursor.Position.X}pos");
+								if (cursorRight > 0)
+								{
+									rc2.Right -= cursorRight;
+								} else
+								{
+									rc2.Right += Math.Abs(cursorRight);
+								}
 							}
+						} else
+						{
+							width = rc2.Right - rc2.Left;
+
 						}
-						width = rc2.Right - rc2.Left;
 					}
 					if (casetype == 1)
 					{
 						rc2.Right = rc2.Left + width;
 						prevRight = rc2.Right;
 						cursorRight = Cursor.Position.X - rc2.Right;
-
 					}
 					Marshal.StructureToPtr(rc2, m.LParam, true);
 					Console.WriteLine($"Sizing: {rc2.Right}, {rc2.Bottom} :: {prevRight} : cur-{Cursor.Position.X}");
 					break;
 				case WM_GETMINMAXINFO:
 					MINMAXINFO mmi2 = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
-					if (casetype == 0)
-					{
-						mmi2.ptMinTrackSize.X = 400;
-						mmi2.ptMinTrackSize.Y = 270;
+					mmi2.ptMinTrackSize.X = 400;
+					mmi2.ptMinTrackSize.Y = 270;
 
-						mmi2.ptMaxTrackSize.X = 1920;
-						mmi2.ptMaxTrackSize.Y = 1920;
-					}
+					mmi2.ptMaxTrackSize.X = 1920;
+					mmi2.ptMaxTrackSize.Y = 1920;
+
+					//if (casetype == 0)
+					//{
+					//	mmi2.ptMinTrackSize.X = 400;
+					//	mmi2.ptMinTrackSize.Y = 270;
+
+					//	mmi2.ptMaxTrackSize.X = 1920;
+					//	mmi2.ptMaxTrackSize.Y = 1920;
+					//}
 					//else if (casetype == 1 && isResizing) // width moving
 					//{
 					//	mmi2.ptMinTrackSize.X = 400;
